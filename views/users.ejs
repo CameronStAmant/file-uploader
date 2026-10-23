@@ -1,6 +1,11 @@
 <html lang="en">
   <%- include("./partials/header") %>
   <body>
-    test
+    <h1>Here is the user list</h1>
+    <ul>
+    <% users.map((user) => { %>
+      <li><%= user.name %></li>
+    <% }) %>
+    </ul>
   </body>
 </html>
