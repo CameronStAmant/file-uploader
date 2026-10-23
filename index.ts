@@ -9,6 +9,10 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
+app.get("/login", (req: Request, res: Response) => {
+  res.render("login", { title: "Login" });
+});
+
 app.use("/users", userRoutes);
 
 app.listen(port, () => {
