@@ -1,0 +1,16 @@
+<html lang="en">
+  <%- include("./partials/header") %>
+  <body>
+    <%- include("./partials/navigation") %>
+    <h1>Sign Up</h1>
+    <form action="/signup" method="post">
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" />
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" />
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" />
+      <button type="submit">Sign up</button>
+    </form>
+  </body>
+</html>
