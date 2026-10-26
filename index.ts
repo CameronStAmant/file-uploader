@@ -90,7 +90,7 @@ app.get("/signup", (req: Request, res: Response) => {
   res.render("signup", { title: "Signup" });
 });
 
-app.post("/signup", async (req: Request, res: Response) => {
+app.post("/signup", async (req: Request, res: Response, next: NextFunction) => {
   try {
     await prisma.user.create({
       data: {
@@ -101,7 +101,7 @@ app.post("/signup", async (req: Request, res: Response) => {
     });
     res.redirect("/login");
   } catch (err) {
-    console.error(err);
+    return next(err);
   }
 });
 
