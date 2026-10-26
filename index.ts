@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import userRoutes from "./routes/userRoutes";
 import expressSession from "express-session";
 import "dotenv/config";
@@ -75,6 +75,11 @@ passport.deserializeUser(async (id: number, done) => {
   } catch (err) {
     done(err);
   }
+});
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.locals.currentUser = req.user;
+  next();
 });
 
 app.get("/", (req: Request, res: Response) => {

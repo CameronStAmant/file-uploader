@@ -2,5 +2,8 @@
   <%- include("./partials/header") %>
   <body>
     <h1>Home</h1>
+    <% if (locals.currentUser) { %>
+      <span>Welcome <%= locals.currentUser.name %></span>
+    <% } %>
   </body>
 </html>
