@@ -1,6 +1,7 @@
 <html lang="en">
   <%- include("./partials/header") %>
   <body>
+    <%- include("./partials/navigation") %>
     <h1>Home</h1>
     <% if (locals.currentUser) { %>
       <span>Welcome <%= locals.currentUser.name %></span>
