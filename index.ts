@@ -97,6 +97,15 @@ app.get("/login", (req: Request, res: Response) => {
   req.session.messages = [];
 });
 
+app.get("/logout", (req: Request, res: Response, next: NextFunction) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
+
 app.post(
   "/login",
   passport.authenticate("local", {
