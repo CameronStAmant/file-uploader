@@ -3,11 +3,18 @@
   <body>
     <h1>Login</h1>
     <form action="/login" method="post">
-      <label for="username">Username</label>
+      <label for="username">Email</label>
       <input id="username" name="username" type="text" />
       <label for="password">Password</label>
       <input id="password" name="password" type="password" />
       <button type="submit">Login</button>
     </form>
+    <% if (locals.errors) { %>
+      <ul>
+        <% locals.errors.forEach((err) => { %>
+          <li><%= err %></li>
+        <% }) %>
+      </ul>
+    <% } %>
   </body>
 </html>
