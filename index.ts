@@ -86,6 +86,10 @@ app.get("/", (req: Request, res: Response) => {
   res.render("home", { title: "Home Page" });
 });
 
+app.get("/signup", (req: Request, res: Response) => {
+  res.render("signup", { title: "Signup" });
+});
+
 app.get("/login", (req: Request, res: Response) => {
   res.render("login", { title: "Login", errors: req.session.messages });
 
