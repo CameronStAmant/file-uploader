@@ -5,6 +5,7 @@
       <li><a href="/login">Login</a></li>
     <% } %>
     <% if (locals.currentUser) { %>
+      <li><a href="/upload-file">Upload file</a></li>
       <li><a href="/logout">Logout</a></li>
     <% } %>
     <% if (!locals.currentUser) { %>

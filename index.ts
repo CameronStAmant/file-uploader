@@ -8,6 +8,29 @@ import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcryptjs";
+import multer from "multer";
+import mime from "mime-types";
+// const upload = multer({ dest: "uploads/", });
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    const extension = mime.extension(file.mimetype);
+    cb(null, Date.now() + `.${extension}`);
+  },
+});
+const upload = multer({
+  storage,
+  fileFilter: function (req, file, cb) {
+    const acceptedFileTypes = ["image/png", "image/jpeg"];
+    if (!acceptedFileTypes.includes(file.mimetype)) {
+      return cb(new Error("Wrong file type"));
+    }
+    cb(null, true);
+  },
+});
 
 const app: Express = express();
 app.set("view engine", "ejs");
@@ -134,6 +157,18 @@ app.get("/logout", (req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use("/users", userRoutes);
+
+app.get("/upload-file", (req: Request, res: Response) => {
+  res.render("upload-file", { title: "Upload File" });
+});
+
+app.post(
+  "/upload-file",
+  upload.single("fileUpload"),
+  (req: Request, res: Response) => {
+    res.redirect("/");
+  },
+);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

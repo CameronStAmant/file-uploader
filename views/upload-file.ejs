@@ -1,0 +1,16 @@
+<html lang="en">
+  <%- include("./partials/header") %>
+  <body>
+    <%- include("./partials/navigation") %>
+    <form action="/upload-file" method="post" enctype="multipart/form-data">
+      <label for="fileUpload">File (png or jpeg)</label>
+      <input
+        type="file"
+        id="fileUpload"
+        accept="image/png, image/jpeg"
+        name="fileUpload"
+      />
+      <button type="submit">Upload</button>
+    </form>
+  </body>
+</html>
