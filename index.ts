@@ -90,20 +90,26 @@ app.get("/signup", (req: Request, res: Response) => {
   res.render("signup", { title: "Signup" });
 });
 
+app.post("/signup", async (req: Request, res: Response) => {
+  try {
+    await prisma.user.create({
+      data: {
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+      },
+    });
+    res.redirect("/login");
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 app.get("/login", (req: Request, res: Response) => {
   res.render("login", { title: "Login", errors: req.session.messages });
 
   // Clear error messages once shown.
   req.session.messages = [];
-});
-
-app.get("/logout", (req: Request, res: Response, next: NextFunction) => {
-  req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
-  });
 });
 
 app.post(
@@ -114,6 +120,15 @@ app.post(
     failureMessage: true,
   }),
 );
+
+app.get("/logout", (req: Request, res: Response, next: NextFunction) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
 
 app.use("/users", userRoutes);
 
