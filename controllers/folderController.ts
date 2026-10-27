@@ -2,7 +2,11 @@ import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
 
 const index = async (req: Request, res: Response) => {
-  const folders = await prisma.folder.findMany();
+  const folders = await prisma.folder.findMany({
+    where: {
+      id: res.locals.currentUser.id,
+    },
+  });
   res.render("folders/index", { title: "Folder list", folders });
 };
 
@@ -14,6 +18,9 @@ const postCreate = async (req: Request, res: Response) => {
   await prisma.folder.create({
     data: {
       name: req.body.name,
+      user: {
+        connect: { id: res.locals.currentUser.id },
+      },
     },
   });
 

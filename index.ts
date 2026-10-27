@@ -160,7 +160,11 @@ app.use("/users", userRoutes);
 app.use("/folders", folderRoutes);
 
 app.get("/upload-file", async (req: Request, res: Response) => {
-  const folders = await prisma.folder.findMany();
+  const folders = await prisma.folder.findMany({
+    where: {
+      userId: res.locals.currentUser.id,
+    },
+  });
   res.render("upload-file", { title: "Upload File", folders });
 });
 
@@ -178,6 +182,9 @@ app.post(
         mimetype: file.mimetype,
         folder: {
           connect: { id: parseInt(folderId) },
+        },
+        user: {
+          connect: { id: res.locals.currentUser.id },
         },
       },
     });
