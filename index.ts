@@ -1,6 +1,7 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import userRoutes from "./routes/userRoutes";
 import folderRoutes from "./routes/folderRoutes";
+import fileRoutes from "./routes/fileRoutes";
 import expressSession from "express-session";
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -9,28 +10,6 @@ import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcryptjs";
-import multer from "multer";
-import mime from "mime-types";
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    const extension = mime.extension(file.mimetype);
-    cb(null, file.originalname + `.${extension}`);
-  },
-});
-const upload = multer({
-  storage,
-  fileFilter: function (req, file, cb) {
-    const acceptedFileTypes = ["image/png", "image/jpeg"];
-    if (!acceptedFileTypes.includes(file.mimetype)) {
-      return cb(new Error("Wrong file type"));
-    }
-    cb(null, true);
-  },
-});
 
 const app: Express = express();
 app.set("view engine", "ejs");
@@ -158,39 +137,7 @@ app.get("/logout", (req: Request, res: Response, next: NextFunction) => {
 
 app.use("/users", userRoutes);
 app.use("/folders", folderRoutes);
-
-app.get("/upload-file", async (req: Request, res: Response) => {
-  const folders = await prisma.folder.findMany({
-    where: {
-      userId: res.locals.currentUser.id,
-    },
-  });
-  res.render("upload-file", { title: "Upload File", folders });
-});
-
-app.post(
-  "/upload-file",
-  upload.single("fileUpload"),
-  async (req: Request, res: Response) => {
-    const file = req.file!;
-    const folderId = req.body.folder;
-
-    await prisma.file.create({
-      data: {
-        name: file.originalname,
-        fileSize: file.size,
-        mimetype: file.mimetype,
-        folder: {
-          connect: { id: parseInt(folderId) },
-        },
-        user: {
-          connect: { id: res.locals.currentUser.id },
-        },
-      },
-    });
-    res.redirect("/");
-  },
-);
+app.use("/files", fileRoutes);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

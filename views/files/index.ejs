@@ -1,0 +1,13 @@
+<html lang="en">
+  <%- include("../partials/header") %>
+  <body>
+    <%- include("../partials/navigation") %>
+    <h1>Here is the file list</h1>
+    <a href="/files/create">Create file</a>
+    <ul>
+    <% files.map((file) => { %>
+      <li><%= file.name %></li>
+    <% }) %>
+    </ul>
+  </body>
+</html>

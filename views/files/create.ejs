@@ -1,8 +1,8 @@
 <html lang="en">
-  <%- include("./partials/header") %>
+  <%- include("../partials/header") %>
   <body>
-    <%- include("./partials/navigation") %>
-    <form action="/upload-file" method="post" enctype="multipart/form-data">
+    <%- include("../partials/navigation") %>
+    <form action="/files/create" method="post" enctype="multipart/form-data">
       <label for="fileUpload">File (png or jpeg)</label>
       <input
         type="file"
