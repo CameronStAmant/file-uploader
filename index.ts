@@ -10,7 +10,6 @@ import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcryptjs";
 import multer from "multer";
 import mime from "mime-types";
-// const upload = multer({ dest: "uploads/", });
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -18,7 +17,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const extension = mime.extension(file.mimetype);
-    cb(null, Date.now() + `.${extension}`);
+    cb(null, file.originalname + `.${extension}`);
   },
 });
 const upload = multer({
@@ -165,7 +164,15 @@ app.get("/upload-file", (req: Request, res: Response) => {
 app.post(
   "/upload-file",
   upload.single("fileUpload"),
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
+    const file = req.file!;
+    await prisma.file.create({
+      data: {
+        name: file.originalname,
+        fileSize: file.size,
+        mimetype: file.mimetype,
+      },
+    });
     res.redirect("/");
   },
 );

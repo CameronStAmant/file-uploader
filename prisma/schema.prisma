@@ -25,3 +25,11 @@ model Session {
   data      String   
   expiresAt DateTime
 }
+
+model File {
+  id          Int    @id @default(autoincrement())
+  name        String 
+  fileSize    Int
+  mimetype    String
+  createdAt   DateTime @default(now())
+}
