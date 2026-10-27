@@ -1,5 +1,6 @@
 import express, { Express, NextFunction, Request, Response } from "express";
 import userRoutes from "./routes/userRoutes";
+import folderRoutes from "./routes/folderRoutes";
 import expressSession from "express-session";
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -156,6 +157,7 @@ app.get("/logout", (req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use("/users", userRoutes);
+app.use("/folders", folderRoutes);
 
 app.get("/upload-file", (req: Request, res: Response) => {
   res.render("upload-file", { title: "Upload File" });
