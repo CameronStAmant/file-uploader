@@ -32,4 +32,12 @@ model File {
   fileSize    Int
   mimetype    String
   createdAt   DateTime @default(now())
+  folder      Folder @relation(fields: [folderId], references: [id])
+  folderId    Int
+}
+
+model Folder {
+  id         Int     @id @default(autoincrement())
+  name       String
+  files      File[] 
 }
