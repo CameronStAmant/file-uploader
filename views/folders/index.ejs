@@ -1,0 +1,13 @@
+<html lang="en">
+  <%- include("../partials/header") %>
+  <body>
+    <%- include("../partials/navigation") %>
+    <h1>Here is the folder list</h1>
+    <a href="/folders/create">Create folder</a>
+    <ul>
+    <% folders.map((folder) => { %>
+      <li><%= folder.name %></li>
+    <% }) %>
+    </ul>
+  </body>
+</html>

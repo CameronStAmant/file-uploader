@@ -1,0 +1,12 @@
+<html lang="en">
+  <%- include("../partials/header") %>
+  <body>
+    <%- include("../partials/navigation") %>
+    <h1>Create folder</h1>
+    <form action="/folders/create" method="post">
+      <label for="name">Name</label>
+      <input name="name" id="name" type="text" />
+      <button type="submit">Create</button>
+    </form>
+  </body>
+</html>
