@@ -10,6 +10,12 @@
         accept="image/png, image/jpeg"
         name="fileUpload"
       />
+      <label for="folder">Select a folder</label>
+      <select name="folder" id="folder">
+        <% folders.forEach((f) => { %>
+          <option value="<%= f.id %>"><%= f.name %></option>
+        <% }) %>
+      </select>
       <button type="submit">Upload</button>
     </form>
   </body>

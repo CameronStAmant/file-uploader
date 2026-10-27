@@ -159,8 +159,9 @@ app.get("/logout", (req: Request, res: Response, next: NextFunction) => {
 app.use("/users", userRoutes);
 app.use("/folders", folderRoutes);
 
-app.get("/upload-file", (req: Request, res: Response) => {
-  res.render("upload-file", { title: "Upload File" });
+app.get("/upload-file", async (req: Request, res: Response) => {
+  const folders = await prisma.folder.findMany();
+  res.render("upload-file", { title: "Upload File", folders });
 });
 
 app.post(
@@ -168,11 +169,16 @@ app.post(
   upload.single("fileUpload"),
   async (req: Request, res: Response) => {
     const file = req.file!;
+    const folderId = req.body.folder;
+
     await prisma.file.create({
       data: {
         name: file.originalname,
         fileSize: file.size,
         mimetype: file.mimetype,
+        folder: {
+          connect: { id: parseInt(folderId) },
+        },
       },
     });
     res.redirect("/");
