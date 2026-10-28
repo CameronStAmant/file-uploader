@@ -98,13 +98,23 @@ app.get("/signup", (req: Request, res: Response) => {
 app.post("/signup", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    await prisma.user.create({
+    const newUser = await prisma.user.create({
       data: {
         name: req.body.name,
         email: req.body.email,
         password: hashedPassword,
       },
     });
+
+    await prisma.folder.create({
+      data: {
+        name: "Default",
+        user: {
+          connect: { id: newUser.id },
+        },
+      },
+    });
+
     res.redirect("/login");
   } catch (err) {
     return next(err);
