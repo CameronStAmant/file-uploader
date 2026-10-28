@@ -34,7 +34,7 @@ model File {
   fileSize    Int
   mimetype    String
   createdAt   DateTime @default(now())
-  folder      Folder @relation(fields: [folderId], references: [id])
+  folder      Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
   folderId    Int
   user        User @relation(fields: [userId], references: [id])
   userId      Int

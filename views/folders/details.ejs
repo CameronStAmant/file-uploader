@@ -19,7 +19,10 @@
   <body>
     <%- include('../partials/navigation') %>
     <h1><%= locals.folder.name %></h1>
-    <button onclick="toggleForm();">Rename</button>
+    <form action="/folders/<%= locals.folder.id %>/delete" method="post">
+      <button type="submit">Delete</button>
+    </form>
+      <button onclick="toggleForm();">Rename</button>
     <form class="rename hidden" method="post" action="/folders/<%= locals.folder.id %>/update">
       <label for="name">Rename</label>
       <input id="name" name="name" type="text" />

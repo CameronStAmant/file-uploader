@@ -62,10 +62,21 @@ const postFolderUpdate = async (req: Request, res: Response) => {
   res.redirect(`/folders/${folderId}`);
 };
 
+const deleteFolder = async (req: Request, res: Response) => {
+  await prisma.folder.delete({
+    where: {
+      id: parseInt(req.params.id as string),
+    },
+  });
+
+  res.redirect("/folders");
+};
+
 export default {
   index,
   getCreate,
   postCreate,
   getFolderDetails,
   postFolderUpdate,
+  deleteFolder,
 };
