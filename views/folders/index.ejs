@@ -6,7 +6,7 @@
     <a href="/folders/create">Create folder</a>
     <ul>
     <% folders.map((folder) => { %>
-      <li><%= folder.name %></li>
+      <li><a href="/folders/<%= folder.id %>"><%= folder.name %></a></li>
     <% }) %>
     </ul>
   </body>

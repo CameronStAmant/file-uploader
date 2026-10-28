@@ -6,5 +6,6 @@ const router = express.Router();
 router.get("/", folderController.index);
 router.get("/create", folderController.getCreate);
 router.post("/create", folderController.postCreate);
+router.get("/:id", folderController.getFolderDetails);
 
 export default router;

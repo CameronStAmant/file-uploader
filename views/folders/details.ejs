@@ -1,0 +1,12 @@
+<html lang="en">
+  <%- include('../partials/header') %>
+  <body>
+    <%- include('../partials/navigation') %>
+    <h1><%= locals.folder.name %></h1>
+    <ul>
+      <% locals.files.forEach((f) => { %>
+        <li><%= f.name %></li>
+      <% }) %>
+    </ul>
+  </body>
+</html>

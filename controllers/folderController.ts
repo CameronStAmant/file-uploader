@@ -27,8 +27,30 @@ const postCreate = async (req: Request, res: Response) => {
   res.redirect("/folders");
 };
 
+const getFolderDetails = async (req: Request, res: Response) => {
+  const folderId = parseInt(req.params.id as string);
+  const folderDetails = await prisma.folder.findUnique({
+    where: {
+      id: folderId,
+    },
+  });
+
+  const associatedFiles = await prisma.file.findMany({
+    where: {
+      folderId,
+    },
+  });
+
+  res.render("folders/details", {
+    title: `${folderDetails?.name} Details`,
+    folder: folderDetails,
+    files: associatedFiles,
+  });
+};
+
 export default {
   index,
   getCreate,
   postCreate,
+  getFolderDetails,
 };
