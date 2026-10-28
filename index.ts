@@ -10,6 +10,7 @@ import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcryptjs";
+import isAuthenticated from "./middleware/isAuthenticated";
 
 const app: Express = express();
 app.set("view engine", "ejs");
@@ -125,6 +126,8 @@ app.post(
     failureMessage: true,
   }),
 );
+
+app.use(isAuthenticated);
 
 app.get("/logout", (req: Request, res: Response, next: NextFunction) => {
   req.logout((err) => {
