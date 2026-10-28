@@ -14,6 +14,7 @@ import isAuthenticated from "./middleware/isAuthenticated";
 
 const app: Express = express();
 app.set("view engine", "ejs");
+app.use(express.static("public"));
 const port = 3000;
 
 const connectionString = `${process.env.DATABASE_URL}`;
