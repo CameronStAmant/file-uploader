@@ -6,6 +6,9 @@
     <form action="/files/<%= file.id %>/download">
       <button type="submit">Download</button>
     </form>
+    <form action="/files/<%= file.id %>/delete">
+      <button type="submit">Delete</button>
+    </form>
     <ul>
       <li>Size: <%= file.fileSize %> bytes</li>
       <li>Upload time: <%= file.createdAt %></li>

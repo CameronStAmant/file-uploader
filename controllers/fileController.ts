@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
+import { unlink } from "node:fs";
 
 const getFiles = async (req: Request, res: Response) => {
   const files = await prisma.file.findMany({
@@ -65,10 +66,32 @@ const getFileDownload = async (req: Request, res: Response) => {
   res.download(file?.path!);
 };
 
+const deleteFile = async (req: Request, res: Response) => {
+  const id = parseInt(req.params.id as string);
+  const file = await prisma.file.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  await prisma.file.delete({
+    where: {
+      id,
+    },
+  });
+
+  unlink(file?.path!, (err) => {
+    if (err) throw err;
+  });
+
+  res.redirect("/");
+};
+
 export default {
   getCreateFile,
   getFiles,
   postCreateFile,
   getFileDetails,
   getFileDownload,
+  deleteFile,
 };

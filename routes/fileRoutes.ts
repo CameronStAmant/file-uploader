@@ -13,5 +13,6 @@ router.post(
 );
 router.get("/:id", fileController.getFileDetails);
 router.get("/:id/download", fileController.getFileDownload);
+router.get("/:id/delete", fileController.deleteFile);
 
 export default router;
