@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
+import { unlink } from "node:fs";
 
 const index = async (req: Request, res: Response) => {
   const folders = await prisma.folder.findMany({
@@ -63,10 +64,24 @@ const postFolderUpdate = async (req: Request, res: Response) => {
 };
 
 const deleteFolder = async (req: Request, res: Response) => {
+  const id = parseInt(req.params.id as string);
+
+  const associatedFiles = await prisma.file.findMany({
+    where: {
+      folderId: id,
+    },
+  });
+
   await prisma.folder.delete({
     where: {
-      id: parseInt(req.params.id as string),
+      id,
     },
+  });
+
+  associatedFiles.forEach((file: any) => {
+    unlink(file?.path!, (err) => {
+      if (err) throw err;
+    });
   });
 
   res.redirect("/folders");
