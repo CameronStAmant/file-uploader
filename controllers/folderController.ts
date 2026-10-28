@@ -4,7 +4,7 @@ import { prisma } from "../lib/prisma";
 const index = async (req: Request, res: Response) => {
   const folders = await prisma.folder.findMany({
     where: {
-      id: res.locals.currentUser.id,
+      userId: res.locals.currentUser.id,
     },
   });
   res.render("folders/index", { title: "Folder list", folders });
