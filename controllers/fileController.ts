@@ -41,8 +41,22 @@ const postCreateFile = async (req: Request, res: Response) => {
   res.redirect("/");
 };
 
+const getFileDetails = async (req: Request, res: Response) => {
+  const fileDetails = await prisma.file.findUnique({
+    where: {
+      id: parseInt(req.params.id as string),
+    },
+  });
+
+  res.render("files/details", {
+    title: `${fileDetails?.name} details`,
+    file: fileDetails,
+  });
+};
+
 export default {
   getCreateFile,
   getFiles,
   postCreateFile,
+  getFileDetails,
 };

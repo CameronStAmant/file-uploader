@@ -6,7 +6,7 @@
     <a href="/files/create">Create file</a>
     <ul>
     <% files.map((file) => { %>
-      <li><%= file.name %></li>
+      <li><a href="/files/<%= file.id %>"><%= file.name %></a></li>
     <% }) %>
     </ul>
   </body>

@@ -1,0 +1,11 @@
+<html lang="en">
+  <%- include("../partials/header") %>
+  <body>
+    <%- include("../partials/navigation") %>
+    <h1><%= file.name %></h1>
+    <ul>
+      <li>Size: <%= file.fileSize %> bytes</li>
+      <li>Upload time: <%= file.createdAt %></li>
+    </ul>
+  </body>
+</html>

@@ -11,5 +11,6 @@ router.post(
   upload.single("fileUpload"),
   fileController.postCreateFile,
 );
+router.get("/:id", fileController.getFileDetails);
 
 export default router;
