@@ -3,6 +3,9 @@
   <body>
     <%- include("../partials/navigation") %>
     <h1><%= file.name %></h1>
+    <form action="/files/<%= file.id %>/download">
+      <button type="submit">Download</button>
+    </form>
     <ul>
       <li>Size: <%= file.fileSize %> bytes</li>
       <li>Upload time: <%= file.createdAt %></li>

@@ -1,13 +1,11 @@
 import multer from "multer";
-import mime from "mime-types";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
-    const extension = mime.extension(file.mimetype);
-    cb(null, file.originalname + `.${extension}`);
+    cb(null, file.originalname);
   },
 });
 const upload = multer({

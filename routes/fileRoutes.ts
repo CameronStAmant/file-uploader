@@ -12,5 +12,6 @@ router.post(
   fileController.postCreateFile,
 );
 router.get("/:id", fileController.getFileDetails);
+router.get("/:id/download", fileController.getFileDownload);
 
 export default router;

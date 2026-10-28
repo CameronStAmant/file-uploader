@@ -36,6 +36,7 @@ const postCreateFile = async (req: Request, res: Response) => {
       user: {
         connect: { id: res.locals.currentUser.id },
       },
+      path: file.path,
     },
   });
   res.redirect("/");
@@ -54,9 +55,20 @@ const getFileDetails = async (req: Request, res: Response) => {
   });
 };
 
+const getFileDownload = async (req: Request, res: Response) => {
+  const file = await prisma.file.findUnique({
+    where: {
+      id: parseInt(req.params.id as string),
+    },
+  });
+
+  res.download(file?.path!);
+};
+
 export default {
   getCreateFile,
   getFiles,
   postCreateFile,
   getFileDetails,
+  getFileDownload,
 };
