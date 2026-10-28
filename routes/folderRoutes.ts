@@ -7,5 +7,6 @@ router.get("/", folderController.index);
 router.get("/create", folderController.getCreate);
 router.post("/create", folderController.postCreate);
 router.get("/:id", folderController.getFolderDetails);
+router.post("/:id/update", folderController.postFolderUpdate);
 
 export default router;

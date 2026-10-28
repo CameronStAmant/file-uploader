@@ -48,9 +48,24 @@ const getFolderDetails = async (req: Request, res: Response) => {
   });
 };
 
+const postFolderUpdate = async (req: Request, res: Response) => {
+  const folderId = parseInt(req.params.id as string);
+  await prisma.folder.update({
+    where: {
+      id: folderId,
+    },
+    data: {
+      name: req.body.name,
+    },
+  });
+
+  res.redirect(`/folders/${folderId}`);
+};
+
 export default {
   index,
   getCreate,
   postCreate,
   getFolderDetails,
+  postFolderUpdate,
 };

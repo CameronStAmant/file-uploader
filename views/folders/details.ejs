@@ -1,9 +1,31 @@
 <html lang="en">
-  <%- include('../partials/header') %>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/styles/style.css" />
+    <script>
+      const toggleForm = () => {
+        const form = document.getElementsByClassName('rename')[0];
+
+        if (form.className.includes('hidden')) {
+          form.classList.remove('hidden')
+        } else {
+          form.classList.add('hidden')
+        }
+      }
+    </script>
+  </head>
   <body>
     <%- include('../partials/navigation') %>
     <h1><%= locals.folder.name %></h1>
-    <ul>
+    <button onclick="toggleForm();">Rename</button>
+    <form class="rename hidden" method="post" action="/folders/<%= locals.folder.id %>/update">
+      <label for="name">Rename</label>
+      <input id="name" name="name" type="text" />
+      <button type="submit">Submit</button>
+    </form>
+      <ul>
       <% locals.files.forEach((f) => { %>
         <li><%= f.name %></li>
       <% }) %>
