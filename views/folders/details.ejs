@@ -14,12 +14,26 @@
           form.classList.add('hidden')
         }
       }
+      
+      const confirmDelete = (e) => {
+        if (!window.confirm("Deleting this folder will also delete any associated files.")) {
+          e.preventDefault();
+        }
+      }
+
+      
+      const getHandlers = () => {
+        const deleteForm = document.getElementById("delete");
+        deleteForm.addEventListener('submit', confirmDelete);
+      }
+
+      window.addEventListener('DOMContentLoaded', getHandlers)
     </script>
   </head>
   <body>
     <%- include('../partials/navigation') %>
     <h1><%= locals.folder.name %></h1>
-    <form action="/folders/<%= locals.folder.id %>/delete" method="post">
+    <form id='delete' action="/folders/<%= locals.folder.id %>/delete" method="post">
       <button type="submit">Delete</button>
     </form>
       <button onclick="toggleForm();">Rename</button>
