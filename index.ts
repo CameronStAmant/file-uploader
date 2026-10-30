@@ -11,6 +11,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcryptjs";
 import isAuthenticated from "./middleware/isAuthenticated";
 import errorHandling from "./middleware/errorHandling";
+import CustomNotFoundError from "./errors/CustomNotFoundError";
 
 const app: Express = express();
 app.set("view engine", "ejs");
@@ -151,6 +152,10 @@ app.get("/logout", (req: Request, res: Response, next: NextFunction) => {
 
 app.use("/folders", folderRoutes);
 app.use("/files", fileRoutes);
+
+app.use((req: Request, res: Response) => {
+  throw new CustomNotFoundError("Route does not exist");
+});
 
 app.use(errorHandling);
 
