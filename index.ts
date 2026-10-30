@@ -1,5 +1,4 @@
 import express, { Express, NextFunction, Request, Response } from "express";
-import userRoutes from "./routes/userRoutes";
 import folderRoutes from "./routes/folderRoutes";
 import fileRoutes from "./routes/fileRoutes";
 import expressSession from "express-session";
@@ -149,7 +148,6 @@ app.get("/logout", (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.use("/users", userRoutes);
 app.use("/folders", folderRoutes);
 app.use("/files", fileRoutes);
 
