@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
 import { unlink } from "node:fs";
+import CustomNotFoundError from "../errors/CustomNotFoundError";
 
 const getFiles = async (req: Request, res: Response) => {
   const files = await prisma.file.findMany({
@@ -23,8 +24,15 @@ const getCreateFile = async (req: Request, res: Response) => {
 };
 
 const postCreateFile = async (req: Request, res: Response) => {
-  const file = req.file!;
+  const file = req.file;
   const folderId = req.body.folder;
+
+  if (!file) {
+    throw new CustomNotFoundError("File not attached");
+  }
+  if (!folderId) {
+    throw new CustomNotFoundError("Folder not selected");
+  }
 
   await prisma.file.create({
     data: {
@@ -50,8 +58,12 @@ const getFileDetails = async (req: Request, res: Response) => {
     },
   });
 
+  if (!fileDetails) {
+    throw new CustomNotFoundError("File not found");
+  }
+
   res.render("files/details", {
-    title: `${fileDetails?.name} details`,
+    title: `${fileDetails.name} details`,
     file: fileDetails,
   });
 };
