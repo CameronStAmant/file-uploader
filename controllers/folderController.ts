@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
 import { unlink } from "node:fs";
+import CustomNotFoundError from "../errors/CustomNotFoundError";
 
 const index = async (req: Request, res: Response) => {
   const folders = await prisma.folder.findMany({
@@ -36,6 +37,10 @@ const getFolderDetails = async (req: Request, res: Response) => {
     },
   });
 
+  if (!folderDetails) {
+    throw new CustomNotFoundError("Folder not found");
+  }
+
   const associatedFiles = await prisma.file.findMany({
     where: {
       folderId,
@@ -43,7 +48,7 @@ const getFolderDetails = async (req: Request, res: Response) => {
   });
 
   res.render("folders/details", {
-    title: `${folderDetails?.name} Details`,
+    title: `${folderDetails.name} Details`,
     folder: folderDetails,
     files: associatedFiles,
   });
