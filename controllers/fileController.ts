@@ -49,8 +49,16 @@ const postCreateFile = async (req: Request, res: Response) => {
     });
 
   if (error) {
-    console.error("Supabase upload failed:", error);
-    throw error;
+    const err = {
+      ...error,
+      statusCode: parseInt(error.statusCode!),
+    };
+    if (error.statusCode === "413") {
+      ((err.message = "File too large"),
+        console.error("Supabase upload failed:", err));
+    }
+
+    throw err;
   }
 
   await prisma.file.create({
