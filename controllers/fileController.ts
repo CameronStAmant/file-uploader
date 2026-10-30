@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
 import { unlink } from "node:fs";
 import CustomNotFoundError from "../errors/CustomNotFoundError";
+import { createClient } from "@supabase/supabase-js";
+import "dotenv/config";
+import { randomUUID } from "node:crypto";
 
 const getFiles = async (req: Request, res: Response) => {
   const files = await prisma.file.findMany({
@@ -34,6 +37,22 @@ const postCreateFile = async (req: Request, res: Response) => {
     throw new CustomNotFoundError("Folder not selected");
   }
 
+  const supabase = createClient(
+    `${process.env.SUPABASE_URL}`,
+    `${process.env.SUPABASE_SECRET_KEY}`,
+  );
+
+  const { data, error } = await supabase.storage
+    .from("Uploads")
+    .upload(`${res.locals.currentUser.id}-${randomUUID()}`, file.buffer, {
+      contentType: file.mimetype,
+    });
+
+  if (error) {
+    console.error("Supabase upload failed:", error);
+    throw error;
+  }
+
   await prisma.file.create({
     data: {
       name: file.originalname,
@@ -45,7 +64,7 @@ const postCreateFile = async (req: Request, res: Response) => {
       user: {
         connect: { id: res.locals.currentUser.id },
       },
-      path: file.path,
+      path: data.path,
     },
   });
   res.redirect("/");
@@ -75,7 +94,24 @@ const getFileDownload = async (req: Request, res: Response) => {
     },
   });
 
-  res.download(file?.path!);
+  if (!file) {
+    throw new CustomNotFoundError("File not found");
+  }
+
+  const supabase = createClient(
+    `${process.env.SUPABASE_URL}`,
+    `${process.env.SUPABASE_SECRET_KEY}`,
+  );
+
+  const { data, error } = await supabase.storage
+    .from("Uploads")
+    .createSignedUrl(file.path, 3600, { download: file.name });
+
+  if (error) {
+    throw error;
+  }
+
+  res.redirect(data.signedUrl);
 };
 
 const deleteFile = async (req: Request, res: Response) => {
