@@ -10,6 +10,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcryptjs";
 import isAuthenticated from "./middleware/isAuthenticated";
+import errorHandling from "./middleware/errorHandling";
 
 const app: Express = express();
 app.set("view engine", "ejs");
@@ -150,6 +151,8 @@ app.get("/logout", (req: Request, res: Response, next: NextFunction) => {
 
 app.use("/folders", folderRoutes);
 app.use("/files", fileRoutes);
+
+app.use(errorHandling);
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
